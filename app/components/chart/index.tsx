@@ -1,23 +1,22 @@
-import { expenseData } from "@/constants/dummyFinances";
+import { expenseData, incomeData } from "@/constants/dummyFinances";
 import React from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Pie, PolarChart } from "victory-native";
 
-const income = 5000;
-
 export default function DonutChart() {
+  const totalIncome = incomeData.reduce((sum, item) => sum + item.value, 0);
   const totalExpenses = expenseData.reduce((sum, item) => sum + item.value, 0);
-  const remaining = income - totalExpenses;
+  const remaining = totalIncome - totalExpenses;
 
   if (Platform.OS === "web") {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.title}>Monthly Financial Overview</Text>
         <View style={styles.summaryBox}>
-          <Text style={styles.incomeText}>Monthly Income: ${income}</Text>
+          <Text style={styles.incomeText}>Total Income: ${totalIncome}</Text>
           <Text style={styles.expenseText}>
             Total Expenses: ${totalExpenses} (
-            {((totalExpenses / income) * 100).toFixed(1)}%)
+            {((totalExpenses / totalIncome) * 100).toFixed(1)}%)
           </Text>
           <Text
             style={[
@@ -25,13 +24,31 @@ export default function DonutChart() {
               remaining >= 0 ? styles.positive : styles.negative,
             ]}
           >
-            Remaining: ${remaining} ({((remaining / income) * 100).toFixed(1)}%)
+            Remaining: ${remaining} (
+            {((remaining / totalIncome) * 100).toFixed(1)}%)
           </Text>
         </View>
         <Text style={styles.webMessage}>
           Chart visualization is only available on iOS and Android.
           {"\n"}Please use the mobile app to view charts.
         </Text>
+
+        <Text style={styles.sectionTitle}>Income Sources</Text>
+        <View style={styles.legend}>
+          {incomeData.map((item) => (
+            <View key={item.label} style={styles.legendItem}>
+              <View
+                style={[styles.colorBox, { backgroundColor: item.color }]}
+              />
+              <Text style={styles.legendText}>
+                {item.label}: ${item.value} (
+                {((item.value / totalIncome) * 100).toFixed(1)}% of income)
+              </Text>
+            </View>
+          ))}
+        </View>
+
+        <Text style={styles.sectionTitle}>Expenses</Text>
         <View style={styles.legend}>
           {expenseData.map((item) => (
             <View key={item.label} style={styles.legendItem}>
@@ -40,23 +57,23 @@ export default function DonutChart() {
               />
               <Text style={styles.legendText}>
                 {item.label}: ${item.value} (
-                {((item.value / income) * 100).toFixed(1)}% of income)
+                {((item.value / totalIncome) * 100).toFixed(1)}% of income)
               </Text>
             </View>
           ))}
         </View>
-      </View>
+      </ScrollView>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>Monthly Financial Overview</Text>
       <View style={styles.summaryBox}>
-        <Text style={styles.incomeText}>Monthly Income: ${income}</Text>
+        <Text style={styles.incomeText}>Total Income: ${totalIncome}</Text>
         <Text style={styles.expenseText}>
           Total Expenses: ${totalExpenses} (
-          {((totalExpenses / income) * 100).toFixed(1)}%)
+          {((totalExpenses / totalIncome) * 100).toFixed(1)}%)
         </Text>
         <Text
           style={[
@@ -64,12 +81,45 @@ export default function DonutChart() {
             remaining >= 0 ? styles.positive : styles.negative,
           ]}
         >
-          Remaining: ${remaining} ({((remaining / income) * 100).toFixed(1)}%)
+          Remaining: ${remaining} (
+          {((remaining / totalIncome) * 100).toFixed(1)}%)
         </Text>
       </View>
+
+      <Text style={styles.sectionTitle}>Income Sources</Text>
       <View style={styles.chartContainer}>
         <PolarChart
-          data={expenseData}
+          data={incomeData}
+          labelKey={"label"}
+          valueKey={"value"}
+          colorKey={"color"}
+        >
+          <Pie.Chart innerRadius={"60%"} />
+        </PolarChart>
+      </View>
+      <View style={styles.legend}>
+        {incomeData.map((item) => (
+          <View key={item.label} style={styles.legendItem}>
+            <View style={[styles.colorBox, { backgroundColor: item.color }]} />
+            <Text style={styles.legendText}>
+              {item.label}: ${item.value} (
+              {((item.value / totalIncome) * 100).toFixed(1)}% of income)
+            </Text>
+          </View>
+        ))}
+      </View>
+
+      <Text style={styles.sectionTitle}>Budget Breakdown</Text>
+      <View style={styles.chartContainer}>
+        <PolarChart
+          data={[
+            ...expenseData,
+            {
+              label: "Remaining",
+              value: remaining > 0 ? remaining : 0,
+              color: remaining > 0 ? "#2ECC71" : "#95A5A6",
+            },
+          ]}
           labelKey={"label"}
           valueKey={"value"}
           colorKey={"color"}
@@ -83,12 +133,25 @@ export default function DonutChart() {
             <View style={[styles.colorBox, { backgroundColor: item.color }]} />
             <Text style={styles.legendText}>
               {item.label}: ${item.value} (
-              {((item.value / income) * 100).toFixed(1)}% of income)
+              {((item.value / totalIncome) * 100).toFixed(1)}% of income)
             </Text>
           </View>
         ))}
+        <View style={styles.legendItem}>
+          <View
+            style={[
+              styles.colorBox,
+              { backgroundColor: remaining > 0 ? "#2ECC71" : "#95A5A6" },
+            ]}
+          />
+          <Text style={[styles.legendText, styles.remainingLegend]}>
+            Remaining: ${remaining > 0 ? remaining : 0} (
+            {((Math.max(remaining, 0) / totalIncome) * 100).toFixed(1)}% of
+            income)
+          </Text>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -158,5 +221,14 @@ const styles = StyleSheet.create({
   },
   legendText: {
     fontSize: 14,
+  },
+  remainingLegend: {
+    fontWeight: "bold",
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 20,
+    marginBottom: 10,
   },
 });

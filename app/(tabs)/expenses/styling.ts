@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 12,
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 2,
   },
   addButtonText: {
     color: "#fff",
@@ -77,10 +77,15 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
   },
   bannerLogo: {
-    height: "100%",
+    height: 550,
     width: "100%",
     bottom: 0,
     left: 0,
     position: "absolute",
+  },
+  actionsHint: {
+    fontSize: 12,
+    color: "#999",
+    textAlign: "center",
   },
 });

@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 import ParallaxScrollView from "@/components/parallax-scroll-view";
 import { ThemedView } from "@/components/themed-view";
-import IncomeChart from "../components/chart";
+import IncomeChart from "../../components/chart";
 
 export default function HomeScreen() {
   return (

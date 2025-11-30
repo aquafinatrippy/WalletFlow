@@ -15,6 +15,21 @@ const COLORS = [
   "#F7DC6F", // Yellow
   "#BB8FCE", // Purple
   "#85C1E2", // Sky Blue
+  "#FF4757", // Bright Red
+  "#2ED573", // Green
+  "#FF6348", // Orange
+  "#FF9FF3", // Pink
+  "#54A0FF", // Azure
+  "#48DBFB", // Cyan
+  "#00D2D3", // Turquoise
+  "#A29BFE", // Lavender
+  "#FD79A8", // Rose
+  "#FDCB6E", // Mustard
+  "#6C5CE7", // Violet
+  "#00B894", // Emerald
+  "#E17055", // Terracotta
+  "#74B9FF", // Light Blue
+  "#A29BFE", // Periwinkle
 ];
 
 export default function AddExpenseModal() {

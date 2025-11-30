@@ -4,6 +4,12 @@ type FinanceDataPoint = {
   color: string;
 };
 
+export const incomeData: FinanceDataPoint[] = [
+  { label: "Salary", value: 4000, color: "#2ECC71" },
+  { label: "Freelance", value: 800, color: "#27AE60" },
+  { label: "Investments", value: 200, color: "#1ABC9C" },
+];
+
 export const expenseData: FinanceDataPoint[] = [
   { label: "Housing", value: 1200, color: "#FF6B6B" },
   { label: "Food", value: 600, color: "#4ECDC4" },

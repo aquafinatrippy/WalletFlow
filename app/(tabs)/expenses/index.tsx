@@ -108,6 +108,12 @@ export default function TabTwoScreen() {
         <ThemedText style={styles.addButtonText}>+ Add Expense</ThemedText>
       </Pressable>
 
+      <ThemedView>
+        <ThemedText type="title" style={styles.actionsHint}>
+          Swipe item left for action menu
+        </ThemedText>
+      </ThemedView>
+
       <ThemedView style={styles.listContainer}>
         {expenses.map((expense, index) => (
           <Swipeable
