@@ -1,14 +1,14 @@
 import { router } from "expo-router";
 import { useState } from "react";
-import { Alert, Animated, Pressable, StyleSheet, View } from "react-native";
+import { Alert, Animated, Pressable, View } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 
 import ParallaxScrollView from "@/components/parallax-scroll-view";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { IconSymbol } from "@/components/ui/icon-symbol";
 import { expenseData } from "@/constants/dummyFinances";
-import { Fonts } from "@/constants/theme";
+import { Image } from "expo-image";
+import { styles } from "./styling";
 
 type ExpenseItem = {
   label: string;
@@ -95,25 +95,12 @@ export default function TabTwoScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
       headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+        <Image
+          source={require("@/assets/images/expenses_banner.png")}
+          style={styles.bannerLogo}
         />
       }
     >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}
-        >
-          Expenses
-        </ThemedText>
-      </ThemedView>
-
       <Pressable
         style={styles.addButton}
         onPress={() => router.push("/AddExpenseModal")}
@@ -154,86 +141,3 @@ export default function TabTwoScreen() {
     </ParallaxScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
-    marginBottom: 20,
-  },
-  addButton: {
-    backgroundColor: "#007AFF",
-    padding: 16,
-    borderRadius: 12,
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  addButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  listContainer: {
-    gap: 0,
-  },
-  expenseItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 16,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
-  },
-  expenseContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  colorIndicator: {
-    width: 8,
-    height: 40,
-    borderRadius: 4,
-  },
-  expenseLabel: {
-    fontSize: 17,
-    fontWeight: "500",
-    color: "#000",
-  },
-  expenseValue: {
-    fontSize: 17,
-    fontWeight: "600",
-    color: "#000",
-  },
-  actionsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  actionButton: {
-    height: "100%",
-    justifyContent: "center",
-  },
-  action: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: 80,
-    height: "100%",
-  },
-  editAction: {
-    backgroundColor: "#007AFF",
-  },
-  deleteAction: {
-    backgroundColor: "#FF3B30",
-  },
-  actionText: {
-    color: "#fff",
-    fontSize: 15,
-    fontWeight: "600",
-  },
-});

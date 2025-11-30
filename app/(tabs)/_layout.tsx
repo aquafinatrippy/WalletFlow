@@ -27,7 +27,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="expenses/index"
         options={{
           title: "Manage Finances",
           tabBarIcon: ({ color }) => (
